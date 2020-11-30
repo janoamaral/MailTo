@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MailTo.SRC;
 
 namespace MailTo
 {
@@ -15,10 +16,18 @@ namespace MailTo
         public frmMain()
         {
             InitializeComponent();
+
+           
+            string[] arguments = Environment.GetCommandLineArgs();
+            Console.WriteLine("GetCommandLineArgs: {0}", string.Join(", ", arguments));
+            ListViewItem itm = new ListViewItem();
+            itm.Text = arguments[0];
+            lst.Items.Add(itm);
         }
 
         private void mnuSalir_Click(object sender, EventArgs e)
         {
+            
             if (System.Windows.Forms.Application.MessageLoop)
             {
                 System.Windows.Forms.Application.Exit();
@@ -27,6 +36,13 @@ namespace MailTo
             {
                 System.Environment.Exit(0);
             }
+        }
+
+        public void NuevoMensaje(string[] args)
+        {
+            ListViewItem itm = new ListViewItem();
+            itm.Text = args[0];
+            lst.Items.Add(itm);
         }
     }
 }

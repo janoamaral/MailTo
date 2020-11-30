@@ -83,6 +83,7 @@ namespace MailTo
             // 
             // toolbar
             // 
+            this.toolbar.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolbar.Location = new System.Drawing.Point(0, 24);
             this.toolbar.Name = "toolbar";
             this.toolbar.Size = new System.Drawing.Size(800, 25);
