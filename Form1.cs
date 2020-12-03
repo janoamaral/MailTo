@@ -19,7 +19,6 @@ namespace MailTo
 
            
             string[] arguments = Environment.GetCommandLineArgs();
-            Console.WriteLine("GetCommandLineArgs: {0}", string.Join(", ", arguments));
             ListViewItem itm = new ListViewItem();
             itm.Text = arguments[0];
             lst.Items.Add(itm);
@@ -40,9 +39,22 @@ namespace MailTo
 
         public void NuevoMensaje(string[] args)
         {
-            ListViewItem itm = new ListViewItem();
-            itm.Text = args[0];
-            lst.Items.Add(itm);
+            if (args.Length > 0)
+            {
+                ListViewItem itm = new ListViewItem();
+                itm.Text = args[0];
+                lst.Items.Add(itm);
+            }
+        }
+
+        private void btnAgregar_Click(object sender, EventArgs e)
+        {
+            frmServerData frmServerData = new frmServerData();
+            frmServerData.ResetServerForm();
+            if (frmServerData.ShowDialog(this) == DialogResult.OK)
+            {
+                ListViewItem itm = new ListViewItem();
+            }
         }
     }
 }

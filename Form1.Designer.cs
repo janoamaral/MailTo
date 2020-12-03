@@ -37,15 +37,25 @@ namespace MailTo
             this.toolbar = new System.Windows.Forms.ToolStrip();
             this.tabContainer = new System.Windows.Forms.TabControl();
             this.tabList = new System.Windows.Forms.TabPage();
-            this.tabConfig = new System.Windows.Forms.TabPage();
             this.lst = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tabServers = new System.Windows.Forms.TabPage();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.lstServidores = new System.Windows.Forms.ListView();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.btnAgregar = new System.Windows.Forms.ToolStripButton();
+            this.tabConfig = new System.Windows.Forms.TabPage();
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.menuStrip1.SuspendLayout();
             this.tabContainer.SuspendLayout();
             this.tabList.SuspendLayout();
+            this.tabServers.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -69,7 +79,7 @@ namespace MailTo
             // mnuSalir
             // 
             this.mnuSalir.Name = "mnuSalir";
-            this.mnuSalir.Size = new System.Drawing.Size(180, 22);
+            this.mnuSalir.Size = new System.Drawing.Size(96, 22);
             this.mnuSalir.Text = "Salir";
             this.mnuSalir.Click += new System.EventHandler(this.mnuSalir_Click);
             // 
@@ -93,6 +103,7 @@ namespace MailTo
             // tabContainer
             // 
             this.tabContainer.Controls.Add(this.tabList);
+            this.tabContainer.Controls.Add(this.tabServers);
             this.tabContainer.Controls.Add(this.tabConfig);
             this.tabContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabContainer.Location = new System.Drawing.Point(0, 49);
@@ -112,16 +123,6 @@ namespace MailTo
             this.tabList.Text = "Lista envío";
             this.tabList.UseVisualStyleBackColor = true;
             // 
-            // tabConfig
-            // 
-            this.tabConfig.Location = new System.Drawing.Point(4, 22);
-            this.tabConfig.Name = "tabConfig";
-            this.tabConfig.Padding = new System.Windows.Forms.Padding(3);
-            this.tabConfig.Size = new System.Drawing.Size(792, 353);
-            this.tabConfig.TabIndex = 1;
-            this.tabConfig.Text = "Configuración";
-            this.tabConfig.UseVisualStyleBackColor = true;
-            // 
             // lst
             // 
             this.lst.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -130,6 +131,8 @@ namespace MailTo
             this.columnHeader3,
             this.columnHeader4});
             this.lst.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lst.FullRowSelect = true;
+            this.lst.GridLines = true;
             this.lst.HideSelection = false;
             this.lst.Location = new System.Drawing.Point(3, 3);
             this.lst.Name = "lst";
@@ -158,6 +161,85 @@ namespace MailTo
             this.columnHeader4.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.columnHeader4.Width = 565;
             // 
+            // tabServers
+            // 
+            this.tabServers.Controls.Add(this.panel1);
+            this.tabServers.Location = new System.Drawing.Point(4, 22);
+            this.tabServers.Name = "tabServers";
+            this.tabServers.Padding = new System.Windows.Forms.Padding(3);
+            this.tabServers.Size = new System.Drawing.Size(792, 353);
+            this.tabServers.TabIndex = 1;
+            this.tabServers.Text = "Servidores SMTP";
+            this.tabServers.UseVisualStyleBackColor = true;
+            // 
+            // panel1
+            // 
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.lstServidores);
+            this.panel1.Controls.Add(this.toolStrip1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(3, 3);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(786, 347);
+            this.panel1.TabIndex = 7;
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btnAgregar,
+            this.toolStripButton1});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(784, 25);
+            this.toolStrip1.TabIndex = 0;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // lstServidores
+            // 
+            this.lstServidores.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lstServidores.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader5});
+            this.lstServidores.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstServidores.FullRowSelect = true;
+            this.lstServidores.HideSelection = false;
+            this.lstServidores.Location = new System.Drawing.Point(0, 25);
+            this.lstServidores.Name = "lstServidores";
+            this.lstServidores.Size = new System.Drawing.Size(784, 320);
+            this.lstServidores.TabIndex = 1;
+            this.lstServidores.UseCompatibleStateImageBehavior = false;
+            this.lstServidores.View = System.Windows.Forms.View.Details;
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(57, 22);
+            this.toolStripButton1.Text = "Editar";
+            // 
+            // btnAgregar
+            // 
+            this.btnAgregar.Image = ((System.Drawing.Image)(resources.GetObject("btnAgregar.Image")));
+            this.btnAgregar.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnAgregar.Name = "btnAgregar";
+            this.btnAgregar.Size = new System.Drawing.Size(69, 22);
+            this.btnAgregar.Text = "Agregar";
+            this.btnAgregar.Click += new System.EventHandler(this.btnAgregar_Click);
+            // 
+            // tabConfig
+            // 
+            this.tabConfig.Location = new System.Drawing.Point(4, 22);
+            this.tabConfig.Name = "tabConfig";
+            this.tabConfig.Padding = new System.Windows.Forms.Padding(3);
+            this.tabConfig.Size = new System.Drawing.Size(792, 353);
+            this.tabConfig.TabIndex = 2;
+            this.tabConfig.Text = "Configuración";
+            this.tabConfig.UseVisualStyleBackColor = true;
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "Tipo";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -167,6 +249,7 @@ namespace MailTo
             this.Controls.Add(this.toolbar);
             this.Controls.Add(this.statusbar);
             this.Controls.Add(this.menuStrip1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "frmMain";
@@ -175,6 +258,11 @@ namespace MailTo
             this.menuStrip1.PerformLayout();
             this.tabContainer.ResumeLayout(false);
             this.tabList.ResumeLayout(false);
+            this.tabServers.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -194,7 +282,14 @@ namespace MailTo
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.TabPage tabServers;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.ListView lstServidores;
+        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton btnAgregar;
         private System.Windows.Forms.TabPage tabConfig;
+        private System.Windows.Forms.ColumnHeader columnHeader5;
     }
 }
 
