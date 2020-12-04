@@ -51,7 +51,7 @@ namespace MailTo
             // 
             // btnGuardar
             // 
-            this.btnGuardar.Location = new System.Drawing.Point(232, 301);
+            this.btnGuardar.Location = new System.Drawing.Point(232, 283);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(122, 36);
             this.btnGuardar.TabIndex = 6;
@@ -175,7 +175,7 @@ namespace MailTo
             // 
             // btnCancelar
             // 
-            this.btnCancelar.Location = new System.Drawing.Point(95, 314);
+            this.btnCancelar.Location = new System.Drawing.Point(105, 296);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(122, 23);
             this.btnCancelar.TabIndex = 7;
@@ -223,7 +223,7 @@ namespace MailTo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(376, 371);
+            this.ClientSize = new System.Drawing.Size(376, 334);
             this.Controls.Add(this.lnkActivarEnvio);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnGuardar);
@@ -242,7 +242,11 @@ namespace MailTo
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "frmServerData";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Datos del servidor";
             ((System.ComponentModel.ISupportInitialize)(this.nmPuerto)).EndInit();

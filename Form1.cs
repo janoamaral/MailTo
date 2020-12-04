@@ -54,6 +54,15 @@ namespace MailTo
             if (frmServerData.ShowDialog(this) == DialogResult.OK)
             {
                 ListViewItem itm = new ListViewItem();
+                itm.Text = frmServerData.serverConfig.ProveedorNombre;
+                itm.SubItems.Add(frmServerData.serverConfig.Email);
+                itm.SubItems.Add(frmServerData.serverConfig.SmtpHost);
+                itm.SubItems.Add(frmServerData.serverConfig.Puerto.ToString());
+                itm.SubItems.Add(frmServerData.serverConfig.SSL ? "SI" : "NO");
+                itm.Tag = frmServerData.serverConfig;
+
+
+                lstServidores.Items.Add(itm);
             }
         }
     }

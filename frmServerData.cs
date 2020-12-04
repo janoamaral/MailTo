@@ -7,11 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MailTo.SRC;
 
 namespace MailTo
 {
     public partial class frmServerData : Form
     {
+        public SmtpConfig serverConfig = new SmtpConfig();
+
         public frmServerData()
         {
             InitializeComponent();
@@ -58,8 +61,18 @@ namespace MailTo
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-            if (txtServer.Text.Length > 0 && txtPassword.Text.Length > 0 && txtUsername.Text.Length > 0)
+            if (txtEmail.Text.Length > 0 && txtServer.Text.Length > 0 && txtPassword.Text.Length > 0 && txtUsername.Text.Length > 0)
             {
+                serverConfig.ProveedorId = cmbTipoServidor.SelectedIndex;
+                serverConfig.ProveedorNombre = cmbTipoServidor.GetItemText(cmbTipoServidor.SelectedItem);
+                serverConfig.Email = txtEmail.Text;
+                serverConfig.SmtpHost = txtServer.Text;
+                serverConfig.Puerto = Convert.ToInt16(nmPuerto.Value);
+                serverConfig.SSL = chkSSL.Checked;
+                serverConfig.Username = txtUsername.Text;
+                serverConfig.Password = txtPassword.Text;
+
+
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             } else
