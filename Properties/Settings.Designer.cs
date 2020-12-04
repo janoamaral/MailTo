@@ -35,5 +35,17 @@ namespace MailTo.Properties {
                 this["Servers"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string EmailPrueba {
+            get {
+                return ((string)(this["EmailPrueba"]));
+            }
+            set {
+                this["EmailPrueba"] = value;
+            }
+        }
     }
 }

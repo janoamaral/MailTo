@@ -56,12 +56,18 @@ namespace MailTo
             this.tabConfig = new System.Windows.Forms.TabPage();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.btnServidorEliminar = new System.Windows.Forms.ToolStripButton();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtConfigMailPrueba = new System.Windows.Forms.TextBox();
+            this.toolStrip2 = new System.Windows.Forms.ToolStrip();
+            this.btnConfiguracionGuardar = new System.Windows.Forms.ToolStripButton();
             this.menuStrip1.SuspendLayout();
             this.tabContainer.SuspendLayout();
             this.tabList.SuspendLayout();
             this.toolbar.SuspendLayout();
             this.tabServers.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            this.tabConfig.SuspendLayout();
+            this.toolStrip2.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -268,6 +274,9 @@ namespace MailTo
             // 
             // tabConfig
             // 
+            this.tabConfig.Controls.Add(this.toolStrip2);
+            this.tabConfig.Controls.Add(this.txtConfigMailPrueba);
+            this.tabConfig.Controls.Add(this.label1);
             this.tabConfig.Location = new System.Drawing.Point(4, 22);
             this.tabConfig.Name = "tabConfig";
             this.tabConfig.Padding = new System.Windows.Forms.Padding(3);
@@ -289,6 +298,42 @@ namespace MailTo
             this.btnServidorEliminar.Size = new System.Drawing.Size(142, 22);
             this.btnServidorEliminar.Text = "Eliminar seleccionado";
             this.btnServidorEliminar.Click += new System.EventHandler(this.btnServidorEliminar_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(18, 55);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(103, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Dirección de prueba";
+            // 
+            // txtConfigMailPrueba
+            // 
+            this.txtConfigMailPrueba.Location = new System.Drawing.Point(137, 51);
+            this.txtConfigMailPrueba.Name = "txtConfigMailPrueba";
+            this.txtConfigMailPrueba.Size = new System.Drawing.Size(265, 20);
+            this.txtConfigMailPrueba.TabIndex = 1;
+            // 
+            // toolStrip2
+            // 
+            this.toolStrip2.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btnConfiguracionGuardar});
+            this.toolStrip2.Location = new System.Drawing.Point(3, 3);
+            this.toolStrip2.Name = "toolStrip2";
+            this.toolStrip2.Size = new System.Drawing.Size(786, 25);
+            this.toolStrip2.TabIndex = 2;
+            this.toolStrip2.Text = "toolStrip2";
+            // 
+            // btnConfiguracionGuardar
+            // 
+            this.btnConfiguracionGuardar.Image = ((System.Drawing.Image)(resources.GetObject("btnConfiguracionGuardar.Image")));
+            this.btnConfiguracionGuardar.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnConfiguracionGuardar.Name = "btnConfiguracionGuardar";
+            this.btnConfiguracionGuardar.Size = new System.Drawing.Size(146, 22);
+            this.btnConfiguracionGuardar.Text = "Guardar configuración";
+            this.btnConfiguracionGuardar.Click += new System.EventHandler(this.btnConfiguracionGuardar_Click);
             // 
             // frmMain
             // 
@@ -317,6 +362,10 @@ namespace MailTo
             this.tabServers.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            this.tabConfig.ResumeLayout(false);
+            this.tabConfig.PerformLayout();
+            this.toolStrip2.ResumeLayout(false);
+            this.toolStrip2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -350,6 +399,10 @@ namespace MailTo
         private System.Windows.Forms.ToolStripButton btnServidorEditar;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton btnServidorEliminar;
+        private System.Windows.Forms.TextBox txtConfigMailPrueba;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ToolStrip toolStrip2;
+        private System.Windows.Forms.ToolStripButton btnConfiguracionGuardar;
     }
 }
 

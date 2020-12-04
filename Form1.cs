@@ -19,9 +19,13 @@ namespace MailTo
 
            
             string[] arguments = Environment.GetCommandLineArgs();
-            ListViewItem itm = new ListViewItem();
-            itm.Text = arguments[0];
-            lst.Items.Add(itm);
+            if (arguments.Length > 1)
+            {
+                // TODO: Procesar mailto
+                ListViewItem itm = new ListViewItem();
+                itm.Text = arguments[0];
+                lst.Items.Add(itm);
+            }
         }
 
         private void mnuSalir_Click(object sender, EventArgs e)
@@ -145,6 +149,12 @@ namespace MailTo
                     GuardarServidores();
                 }
             }
+        }
+
+        private void btnConfiguracionGuardar_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.EmailPrueba = txtConfigMailPrueba.Text;
+            Properties.Settings.Default.Save();
         }
     }
 }
