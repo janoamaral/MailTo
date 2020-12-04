@@ -68,6 +68,9 @@ namespace MailTo
             }
         }
 
+        /// <summary>
+        /// Guarda la configuración de los servidores
+        /// </summary>
         private void GuardarServidores()
         {
             Properties.Settings.Default.Servers.Clear();
@@ -80,6 +83,10 @@ namespace MailTo
             Properties.Settings.Default.Save();
         }
 
+
+        /// <summary>
+        /// Carga los servidores a la lista
+        /// </summary>
         private void LoadServidores()
         {
             if (Properties.Settings.Default.Servers != null)
@@ -113,6 +120,31 @@ namespace MailTo
                 lstServidores.Items.Remove(lstServidores.SelectedItems[0]);
             }
             GuardarServidores();
+        }
+
+        private void btnServidorEditar_Click(object sender, EventArgs e)
+        {
+            if (lstServidores.SelectedItems.Count == 1)
+            {
+                frmServerData frmServerData = new frmServerData();
+
+                SmtpConfig serverConfig = new SmtpConfig();
+                serverConfig = (SmtpConfig)lstServidores.SelectedItems[0].Tag;
+
+                frmServerData.PutData(serverConfig);
+
+                if (frmServerData.ShowDialog(this) == DialogResult.OK)
+                {
+                    lstServidores.SelectedItems[0].Text = frmServerData.serverConfig.ProveedorNombre;
+                    lstServidores.SelectedItems[0].SubItems[1].Text =frmServerData.serverConfig.Email;
+                    lstServidores.SelectedItems[0].SubItems[2].Text = frmServerData.serverConfig.SmtpHost;
+                    lstServidores.SelectedItems[0].SubItems[3].Text = frmServerData.serverConfig.Puerto.ToString();
+                    lstServidores.SelectedItems[0].SubItems[4].Text = frmServerData.serverConfig.SSL ? "SI" : "NO";
+                    lstServidores.SelectedItems[0].Tag = frmServerData.serverConfig;
+
+                    GuardarServidores();
+                }
+            }
         }
     }
 }

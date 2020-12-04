@@ -264,6 +264,7 @@ namespace MailTo
             this.btnServidorEditar.Name = "btnServidorEditar";
             this.btnServidorEditar.Size = new System.Drawing.Size(57, 22);
             this.btnServidorEditar.Text = "Editar";
+            this.btnServidorEditar.Click += new System.EventHandler(this.btnServidorEditar_Click);
             // 
             // tabConfig
             // 

@@ -91,5 +91,24 @@ namespace MailTo
         {
             System.Diagnostics.Process.Start("https://myaccount.google.com/lesssecureapps");
         }
+
+        private void txtEmail_TextChanged(object sender, EventArgs e)
+        {
+            if (cmbTipoServidor.SelectedIndex != 1)
+            {
+                txtUsername.Text = txtEmail.Text;
+            }
+        }
+
+        public void PutData(SmtpConfig smtpConfig)
+        {
+            cmbTipoServidor.SelectedIndex = smtpConfig.ProveedorId;
+            txtEmail.Text = smtpConfig.Email;
+            txtServer.Text = smtpConfig.SmtpHost;
+            nmPuerto.Value = smtpConfig.Puerto;
+            chkSSL.Checked = smtpConfig.SSL;
+            txtUsername.Text = smtpConfig.Username;
+            txtPassword.Text = smtpConfig.Password;
+        }
     }
 }
