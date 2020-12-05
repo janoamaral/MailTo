@@ -75,8 +75,10 @@ namespace MailTo
             this.cmbTipoServidor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbTipoServidor.FormattingEnabled = true;
             this.cmbTipoServidor.Items.AddRange(new object[] {
+            "Servidor propio",
             "Gmail",
-            "Servidor propio"});
+            "Outlook",
+            "Yahoo!"});
             this.cmbTipoServidor.Location = new System.Drawing.Point(97, 24);
             this.cmbTipoServidor.Name = "cmbTipoServidor";
             this.cmbTipoServidor.Size = new System.Drawing.Size(257, 21);

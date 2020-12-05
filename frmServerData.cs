@@ -26,10 +26,16 @@ namespace MailTo
             switch (cmbTipoServidor.SelectedIndex)
             {
                 case 0:
-                    SetGmailForm();
+                    ResetServerForm();
                     break;
                 case 1:
-                    ResetServerForm();
+                    SetGmailForm();
+                    break;
+                case 2:
+                    SetOutlookForm();
+                    break;
+                case 3:
+                    SetYahooForm();
                     break;
             }
         }
@@ -42,7 +48,7 @@ namespace MailTo
             chkSSL.Checked = false;
             txtUsername.Clear();
             txtPassword.Clear();
-            cmbTipoServidor.SelectedIndex = 1;
+            cmbTipoServidor.SelectedIndex = 0;
             lnkActivarEnvio.Visible = false;
             lblDebe.Visible = false;
         }
@@ -51,12 +57,35 @@ namespace MailTo
         {
             txtServer.Text = "smtp.gmail.com";
             txtEmail.Text = "@gmail.com";
-            nmPuerto.Value = 465;
+            nmPuerto.Value = 587;
             chkSSL.Checked = true;
             txtUsername.Clear();
             txtPassword.Clear();
             lblDebe.Visible = true;
             lnkActivarEnvio.Visible = true;
+        }
+        private void SetOutlookForm()
+        {
+            txtServer.Text = "smtp.office365.com";
+            txtEmail.Text = "@outlook.com";
+            nmPuerto.Value = 587;
+            chkSSL.Checked = true;
+            txtUsername.Clear();
+            txtPassword.Clear();
+            lblDebe.Visible = false;
+            lnkActivarEnvio.Visible = false;
+        }
+
+        private void SetYahooForm()
+        {
+            txtServer.Text = "smtp.mail.yahoo.com";
+            txtEmail.Text = "@yahoo.com";
+            nmPuerto.Value = 587;
+            chkSSL.Checked = true;
+            txtUsername.Clear();
+            txtPassword.Clear();
+            lblDebe.Visible = false;
+            lnkActivarEnvio.Visible = false;
         }
 
         private void btnGuardar_Click(object sender, EventArgs e)
@@ -77,7 +106,7 @@ namespace MailTo
                 this.Close();
             } else
             {
-                MessageBox.Show("Faltan datos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("Faltan completar campos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
@@ -94,7 +123,7 @@ namespace MailTo
 
         private void txtEmail_TextChanged(object sender, EventArgs e)
         {
-            if (cmbTipoServidor.SelectedIndex != 1)
+            if (cmbTipoServidor.SelectedIndex != 0)
             {
                 txtUsername.Text = txtEmail.Text;
             }

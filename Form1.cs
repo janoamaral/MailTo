@@ -16,16 +16,7 @@ namespace MailTo
         public frmMain()
         {
             InitializeComponent();
-
-           
-            string[] arguments = Environment.GetCommandLineArgs();
-            if (arguments.Length > 1)
-            {
-                // TODO: Procesar mailto
-                ListViewItem itm = new ListViewItem();
-                itm.Text = arguments[0];
-                lst.Items.Add(itm);
-            }
+            NuevoMensaje(Environment.GetCommandLineArgs());
         }
 
         private void mnuSalir_Click(object sender, EventArgs e)
@@ -45,9 +36,20 @@ namespace MailTo
         {
             if (args.Length > 0)
             {
-                ListViewItem itm = new ListViewItem();
-                itm.Text = args[0];
-                lst.Items.Add(itm);
+                ArgParser argumentos = new ArgParser(args);
+                Sender sender = new Sender();
+                if (argumentos.Parse(ref sender) == 0)
+                {
+                    ListViewItem itm = new ListViewItem();
+                    itm.Text = (lst.Items.Count + 1).ToString();
+                    itm.SubItems.Add("BORRADOR");
+                    itm.SubItems.Add(sender.Attachment.Length > 0 ? "🔗" : "-");
+                    itm.SubItems.Add(sender.To);
+                    itm.SubItems.Add("N/A");
+                    itm.Tag = sender;
+
+                    lst.Items.Add(itm);
+                }
             }
         }
 
@@ -115,6 +117,14 @@ namespace MailTo
         private void frmMain_Load(object sender, EventArgs e)
         {
             LoadServidores();
+            LoadSettings();
+        }
+
+        private void LoadSettings()
+        {
+            txtConfigMailPrueba.Text = Properties.Settings.Default.EmailPrueba;
+            txtConfigMailRespuesta.Text = Properties.Settings.Default.DireccionRespuesta;
+            txtConfigNombre.Text = Properties.Settings.Default.Nombre;
         }
 
         private void btnServidorEliminar_Click(object sender, EventArgs e)
@@ -122,6 +132,8 @@ namespace MailTo
             if (lstServidores.SelectedItems.Count == 1)
             {
                 lstServidores.Items.Remove(lstServidores.SelectedItems[0]);
+            } else {
+                MessageBox.Show("Debe seleccionar un servidor primero", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             GuardarServidores();
         }
@@ -148,13 +160,52 @@ namespace MailTo
 
                     GuardarServidores();
                 }
+            } else
+            {
+                MessageBox.Show("Debe seleccionar un servidor primero", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
         private void btnConfiguracionGuardar_Click(object sender, EventArgs e)
         {
             Properties.Settings.Default.EmailPrueba = txtConfigMailPrueba.Text;
+            Properties.Settings.Default.Nombre = txtConfigNombre.Text;
+            Properties.Settings.Default.DireccionRespuesta = txtConfigMailRespuesta.Text;
             Properties.Settings.Default.Save();
+        }
+
+        private void btnServidorPrueba_Click(object sender, EventArgs e)
+        {
+            if (lstServidores.SelectedItems.Count == 1 && txtConfigMailPrueba.Text.Length > 0)
+            {
+                Sender mail = new Sender((SmtpConfig)lstServidores.SelectedItems[0].Tag);
+                mail.From = txtConfigNombre.Text;
+                mail.Subject = "Prueba de recepción";
+                mail.To = txtConfigMailPrueba.Text;
+                mail.ReplyTo = txtConfigMailRespuesta.Text;
+                mail.Body = "Esto es un mail de <b>PRUEBA</b>.";
+
+                mail.Send();
+            } else {
+                MessageBox.Show("Debe seleccionar un servidor y tener cargada la dirección de prueba.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+
+        public void ActualizarStatus(string status)
+        {
+            lblStatus.Text = status;
+        }
+
+        private void btnMailEnviar_Click(object sender, EventArgs e)
+        {
+            lblStatus.Text = "Enviando...";
+            pb.Visible = true;
+        }
+
+        private void btnMailLimpiar_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

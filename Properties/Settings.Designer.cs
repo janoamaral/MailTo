@@ -47,5 +47,29 @@ namespace MailTo.Properties {
                 this["EmailPrueba"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Nombre {
+            get {
+                return ((string)(this["Nombre"]));
+            }
+            set {
+                this["Nombre"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DireccionRespuesta {
+            get {
+                return ((string)(this["DireccionRespuesta"]));
+            }
+            set {
+                this["DireccionRespuesta"] = value;
+            }
+        }
     }
 }

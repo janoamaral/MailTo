@@ -82,6 +82,7 @@
     <Compile Include="SRC\ArgParser.cs" />
     <Compile Include="SRC\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SRC\Sender.cs" />
     <Compile Include="SRC\SmtpConfig.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

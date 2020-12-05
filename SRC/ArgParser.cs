@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace MailTo.SRC
@@ -18,6 +19,39 @@ namespace MailTo.SRC
         public ArgParser(string[] args)
         {
             Args = args;
+        }
+
+
+        public int Parse(ref Sender sender)
+        {
+            // Buscar los parametros
+            int index = 0;
+            for (int i = 0; i < Args.Length; i++)
+            {
+                if (Args[i] == "-compose" && (i+1 < Args.Length))
+                {
+                    index = i + 1;
+                    break;
+                }
+            }
+
+            string args = Args[index];
+
+            sender.To = GetField("to", args);
+            sender.Subject = GetField("subject", args);
+            sender.Body = GetField("body", args);
+            sender.Attachment = GetField("attachment", args);
+
+            return ((sender.To.Length > 0 && sender.Subject.Length > 0 && sender.Body.Length > 0) ? 0 : -1);
+        }
+
+        private string GetField(string field, string text)
+        {
+            string pattern = $"{field}='[^']*'";
+            Regex rg = new Regex(pattern);
+
+            MatchCollection found = rg.Matches(text);
+            return (found.Count > 0 ? found[0].Value.Substring(field.Length + 2, found[0].Value.Length - (field.Length + 3)) : "");
         }
     }
 }
