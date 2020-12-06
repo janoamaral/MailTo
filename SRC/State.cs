@@ -84,6 +84,14 @@ namespace MailTo.SRC
         }
 
         /// <summary>
+        /// Limpia todos los servidores de la lista de servidores disponibles
+        /// </summary>
+        public void ClearServers()
+        {
+            ServidoresDisponibles.Clear();
+        }
+
+        /// <summary>
         /// Quita todos los mensajes de la lista de mensajes
         /// </summary>
         public void DequeueAll()

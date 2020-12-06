@@ -35,6 +35,7 @@ namespace MailTo
             this.archivoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSalir = new System.Windows.Forms.ToolStripMenuItem();
             this.statusbar = new System.Windows.Forms.StatusStrip();
+            this.pb = new System.Windows.Forms.ToolStripProgressBar();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabContainer = new System.Windows.Forms.TabControl();
             this.tabList = new System.Windows.Forms.TabPage();
@@ -46,6 +47,9 @@ namespace MailTo
             this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.toolbar = new System.Windows.Forms.ToolStrip();
             this.btnMailEnviar = new System.Windows.Forms.ToolStripButton();
+            this.btnMailPausar = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnMailLimpiar = new System.Windows.Forms.ToolStripButton();
             this.tabServers = new System.Windows.Forms.TabPage();
             this.lstServidores = new System.Windows.Forms.ListView();
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -71,10 +75,6 @@ namespace MailTo
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
             this.btnConfiguracionGuardar = new System.Windows.Forms.ToolStripButton();
             this.cron = new System.Windows.Forms.Timer(this.components);
-            this.pb = new System.Windows.Forms.ToolStripProgressBar();
-            this.btnMailPausar = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.btnMailLimpiar = new System.Windows.Forms.ToolStripButton();
             this.menuStrip1.SuspendLayout();
             this.statusbar.SuspendLayout();
             this.tabContainer.SuspendLayout();
@@ -124,6 +124,15 @@ namespace MailTo
             this.statusbar.SizingGrip = false;
             this.statusbar.TabIndex = 1;
             this.statusbar.Text = "statusStrip1";
+            // 
+            // pb
+            // 
+            this.pb.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.pb.MarqueeAnimationSpeed = 150;
+            this.pb.Name = "pb";
+            this.pb.Size = new System.Drawing.Size(100, 16);
+            this.pb.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.pb.Visible = false;
             // 
             // lblStatus
             // 
@@ -224,6 +233,29 @@ namespace MailTo
             this.btnMailEnviar.Size = new System.Drawing.Size(59, 22);
             this.btnMailEnviar.Text = "Enviar";
             this.btnMailEnviar.Click += new System.EventHandler(this.btnMailEnviar_Click);
+            // 
+            // btnMailPausar
+            // 
+            this.btnMailPausar.Image = ((System.Drawing.Image)(resources.GetObject("btnMailPausar.Image")));
+            this.btnMailPausar.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnMailPausar.Name = "btnMailPausar";
+            this.btnMailPausar.Size = new System.Drawing.Size(62, 22);
+            this.btnMailPausar.Text = "Pausar";
+            this.btnMailPausar.Click += new System.EventHandler(this.btnMailPausar_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // btnMailLimpiar
+            // 
+            this.btnMailLimpiar.Image = ((System.Drawing.Image)(resources.GetObject("btnMailLimpiar.Image")));
+            this.btnMailLimpiar.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnMailLimpiar.Name = "btnMailLimpiar";
+            this.btnMailLimpiar.Size = new System.Drawing.Size(159, 22);
+            this.btnMailLimpiar.Text = "Eliminar la lista de envíos";
+            this.btnMailLimpiar.Click += new System.EventHandler(this.btnMailLimpiar_Click);
             // 
             // tabServers
             // 
@@ -444,38 +476,6 @@ namespace MailTo
             // cron
             // 
             this.cron.Tick += new System.EventHandler(this.cron_Tick);
-            // 
-            // pb
-            // 
-            this.pb.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.pb.MarqueeAnimationSpeed = 150;
-            this.pb.Name = "pb";
-            this.pb.Size = new System.Drawing.Size(100, 16);
-            this.pb.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
-            this.pb.Visible = false;
-            // 
-            // btnMailPausar
-            // 
-            this.btnMailPausar.Image = ((System.Drawing.Image)(resources.GetObject("btnMailPausar.Image")));
-            this.btnMailPausar.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnMailPausar.Name = "btnMailPausar";
-            this.btnMailPausar.Size = new System.Drawing.Size(62, 22);
-            this.btnMailPausar.Text = "Pausar";
-            this.btnMailPausar.Click += new System.EventHandler(this.btnMailPausar_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
-            // 
-            // btnMailLimpiar
-            // 
-            this.btnMailLimpiar.Image = ((System.Drawing.Image)(resources.GetObject("btnMailLimpiar.Image")));
-            this.btnMailLimpiar.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnMailLimpiar.Name = "btnMailLimpiar";
-            this.btnMailLimpiar.Size = new System.Drawing.Size(159, 22);
-            this.btnMailLimpiar.Text = "Eliminar la lista de envíos";
-            this.btnMailLimpiar.Click += new System.EventHandler(this.btnMailLimpiar_Click);
             // 
             // frmMain
             // 

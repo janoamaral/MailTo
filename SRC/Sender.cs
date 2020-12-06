@@ -50,6 +50,7 @@ namespace MailTo.SRC
             smtpConfig = server;
         }
 
+
         /// <summary>
         /// Callback del envío del mail async
         /// </summary>

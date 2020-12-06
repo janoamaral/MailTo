@@ -211,14 +211,14 @@ namespace MailTo
                 {
                     ListViewItem itm = new ListViewItem();
                     itm.Text = (lst.Items.Count + 1).ToString();
-                    itm.SubItems.Add("BORRADOR");
+                    itm.SubItems.Add("BANDEJA SALIDA");
                     itm.SubItems.Add(sender.Attachment.Length > 0 ? "🔗" : "-");
                     itm.SubItems.Add(sender.To);
                     itm.SubItems.Add("N/A");
                     itm.Tag = sender;
 
                     sender.MessageID = lst.Items.Count;
-                    GuardarMail(sender.MessageID, argumentos.RawCompose);
+                    GuardarMail(sender.Sent? 1 : 0, argumentos.RawCompose);
 
                     lst.Items.Add(itm);
 
@@ -232,9 +232,9 @@ namespace MailTo
         /// </summary>
         /// <param name="MessageID"></param>
         /// <param name="Message"></param>
-        private void GuardarMail(int MessageID, string Message)
+        private void GuardarMail(int Sent, string Message)
         {
-            Properties.Settings.Default.MailList.Add(Message);
+            Properties.Settings.Default.MailList.Add($"{Sent};{Message}");
             Properties.Settings.Default.Save();
         }
 
@@ -254,16 +254,18 @@ namespace MailTo
                     {
                         ListViewItem itm = new ListViewItem();
                         itm.Text = (lst.Items.Count + 1).ToString();
-                        itm.SubItems.Add("BORRADOR");
+                        itm.SubItems.Add(mail.Substring(0,1) == "0"? "ENVIADO" : "BANDEJA SALIDA");
                         itm.SubItems.Add(sender.Attachment.Length > 0 ? "🔗" : "-");
                         itm.SubItems.Add(sender.To);
                         itm.SubItems.Add("N/A");
                         itm.Tag = sender;
 
                         sender.MessageID = i;
+                        sender.Sent = mail.Substring(0, 1) == "0" ? true : false;
+
                         lst.Items.Add(itm);
 
-                        state.AddMessage(sender);
+                        if (mail.Substring(0,1) == "1") state.AddMessage(sender);
                         i++;
                     }
                 }
@@ -276,11 +278,13 @@ namespace MailTo
         private void GuardarServidores()
         {
             Properties.Settings.Default.Servers.Clear();
+            state.ClearServers();
             foreach (ListViewItem itm in lstServidores.Items)
             {
                 SmtpConfig serverConfig = new SmtpConfig();
                 serverConfig = (SmtpConfig)itm.Tag;
                 Properties.Settings.Default.Servers.Add(serverConfig.ToString());
+                state.AddServer(serverConfig);
             }
             Properties.Settings.Default.Save();
         }
@@ -332,7 +336,12 @@ namespace MailTo
             lst.Items[messageID].SubItems[4].Text = sendFrom;
             Sender s = (Sender)lst.Items[messageID].Tag;
             s.Sent = status == 0 ? true : false;
+           
             lst.Items[messageID].Tag = s;
+
+            string raw = Properties.Settings.Default.MailList[messageID];
+            Properties.Settings.Default.MailList[messageID] = $"{status};{raw.Substring(raw.IndexOf(';'))}";
+            Properties.Settings.Default.Save();
         }
 
         /// <summary>
