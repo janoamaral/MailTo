@@ -74,9 +74,7 @@ namespace MailTo
             this.pb = new System.Windows.Forms.ToolStripProgressBar();
             this.btnMailPausar = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.btnMailDetener = new System.Windows.Forms.ToolStripButton();
             this.btnMailLimpiar = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
             this.statusbar.SuspendLayout();
             this.tabContainer.SuspendLayout();
@@ -209,9 +207,7 @@ namespace MailTo
             this.toolbar.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnMailEnviar,
-            this.toolStripSeparator3,
             this.btnMailPausar,
-            this.btnMailDetener,
             this.toolStripSeparator2,
             this.btnMailLimpiar});
             this.toolbar.Location = new System.Drawing.Point(3, 3);
@@ -445,6 +441,10 @@ namespace MailTo
             this.btnConfiguracionGuardar.Text = "Guardar configuración";
             this.btnConfiguracionGuardar.Click += new System.EventHandler(this.btnConfiguracionGuardar_Click);
             // 
+            // cron
+            // 
+            this.cron.Tick += new System.EventHandler(this.cron_Tick);
+            // 
             // pb
             // 
             this.pb.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
@@ -461,19 +461,12 @@ namespace MailTo
             this.btnMailPausar.Name = "btnMailPausar";
             this.btnMailPausar.Size = new System.Drawing.Size(62, 22);
             this.btnMailPausar.Text = "Pausar";
+            this.btnMailPausar.Click += new System.EventHandler(this.btnMailPausar_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
-            // 
-            // btnMailDetener
-            // 
-            this.btnMailDetener.Image = ((System.Drawing.Image)(resources.GetObject("btnMailDetener.Image")));
-            this.btnMailDetener.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnMailDetener.Name = "btnMailDetener";
-            this.btnMailDetener.Size = new System.Drawing.Size(68, 22);
-            this.btnMailDetener.Text = "Detener";
             // 
             // btnMailLimpiar
             // 
@@ -483,11 +476,6 @@ namespace MailTo
             this.btnMailLimpiar.Size = new System.Drawing.Size(159, 22);
             this.btnMailLimpiar.Text = "Eliminar la lista de envíos";
             this.btnMailLimpiar.Click += new System.EventHandler(this.btnMailLimpiar_Click);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
             // 
             // frmMain
             // 
@@ -575,10 +563,8 @@ namespace MailTo
         public System.Windows.Forms.Timer cron;
         private System.Windows.Forms.ToolStripProgressBar pb;
         private System.Windows.Forms.ToolStripButton btnMailPausar;
-        private System.Windows.Forms.ToolStripButton btnMailDetener;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripButton btnMailLimpiar;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
     }
 }
 

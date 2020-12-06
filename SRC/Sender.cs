@@ -15,17 +15,23 @@ namespace MailTo.SRC
         SmtpClient smtp = new SmtpClient();
 
         public int MessageID;
-        public string From;
-        public string To;
-        public string ReplyTo;
-        public string Subject;
-        public string Body;
-        public string Attachment;
+        public string From = "";
+        public string To = "";
+        public string ReplyTo = "";
+        public string Subject = "";
+        public string Body = "";
+        public string Attachment = "";
+        public bool Sent = false;
 
-        static bool mailSent = false;
-
-
+        /// <summary>
+        /// Constructor por defecto
+        /// </summary>
         public Sender() { }
+
+        /// <summary>
+        /// Constructor inyectando la configuración del servidor SMTP
+        /// </summary>
+        /// <param name="server">Configuración SMTP</param>
         public Sender(SmtpConfig server)
         {
             smtpConfig = server;
@@ -41,9 +47,18 @@ namespace MailTo.SRC
             smtpConfig = server;
         }
 
-        private static void SendCompletedCallback(object sender, AsyncCompletedEventArgs e)
+        /// <summary>
+        /// Callback del envío del mail async
+        /// </summary>
+        /// <param name="sender">Servidor SMTP que envió el correo</param>
+        /// <param name="e">Argumentos</param>
+        /// <param name="msgId">Index del ListViewIndex del listado de correos</param>
+        private static void SendCompletedCallback(object sender, AsyncCompletedEventArgs e, int msgId)
         {
             String token = (string)e.UserState;
+            SmtpClient s = (SmtpClient)sender;
+            int status = 1;
+
 
             if (e.Cancelled)
             {
@@ -55,11 +70,17 @@ namespace MailTo.SRC
             }
             else
             {
+                status = 0;
                 Program.FrmMain.ActualizarStatus("✓ Mensaje enviado");
             }
-            mailSent = true;
+
+            Program.FrmMain.ActualizarMensaje(msgId, status, s.Host);
         }
 
+        /// <summary>
+        /// Envía de manera asincrona un mail
+        /// </summary>
+        /// <returns>0 si la función envió el correo. -1 si hubo un error</returns>
         public int Send()
         {
             try
@@ -81,7 +102,7 @@ namespace MailTo.SRC
                 email.IsBodyHtml = true;
                 email.Body = Body;
 
-                smtp.SendCompleted += new SendCompletedEventHandler(SendCompletedCallback);
+                smtp.SendCompleted += new SendCompletedEventHandler((sender, e) => SendCompletedCallback(sender, e, MessageID));
                 smtp.SendAsync(email, DateTime.Now.Ticks.ToString());
                 Program.FrmMain.ActualizarStatus("Enviando prueba");
 
@@ -92,6 +113,9 @@ namespace MailTo.SRC
             return 0;
         }
 
+        /// <summary>
+        /// Cancela el envío.
+        /// </summary>
         public void Cancelar()
         {
             smtp.SendAsyncCancel();

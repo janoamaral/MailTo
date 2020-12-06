@@ -13,6 +13,7 @@ namespace MailTo
 {
     public partial class frmMain : Form
     {
+        State state = new State();
         public frmMain()
         {
             InitializeComponent();
@@ -32,27 +33,6 @@ namespace MailTo
             }
         }
 
-        public void NuevoMensaje(string[] args)
-        {
-            if (args.Length > 0)
-            {
-                ArgParser argumentos = new ArgParser(args);
-                Sender sender = new Sender();
-                if (argumentos.Parse(ref sender) == 0)
-                {
-                    ListViewItem itm = new ListViewItem();
-                    itm.Text = (lst.Items.Count + 1).ToString();
-                    itm.SubItems.Add("BORRADOR");
-                    itm.SubItems.Add(sender.Attachment.Length > 0 ? "🔗" : "-");
-                    itm.SubItems.Add(sender.To);
-                    itm.SubItems.Add("N/A");
-                    itm.Tag = sender;
-
-                    lst.Items.Add(itm);
-                }
-            }
-        }
-
         private void btnAgregar_Click(object sender, EventArgs e)
         {
             frmServerData frmServerData = new frmServerData();
@@ -69,62 +49,15 @@ namespace MailTo
 
 
                 lstServidores.Items.Add(itm);
-
+                state.AddServer(frmServerData.serverConfig);
                 GuardarServidores();
             }
-        }
-
-        /// <summary>
-        /// Guarda la configuración de los servidores
-        /// </summary>
-        private void GuardarServidores()
-        {
-            Properties.Settings.Default.Servers.Clear();
-            foreach (ListViewItem itm in lstServidores.Items)
-            {
-                SmtpConfig serverConfig = new SmtpConfig();
-                serverConfig = (SmtpConfig)itm.Tag;
-                Properties.Settings.Default.Servers.Add(serverConfig.ToString());
-            }
-            Properties.Settings.Default.Save();
-        }
-
-
-        /// <summary>
-        /// Carga los servidores a la lista
-        /// </summary>
-        private void LoadServidores()
-        {
-            if (Properties.Settings.Default.Servers != null)
-            {
-                foreach (string server in Properties.Settings.Default.Servers)
-                {
-                    SmtpConfig serverConfig = new SmtpConfig(server);
-                    ListViewItem itm = new ListViewItem();
-                    itm.Text = serverConfig.ProveedorNombre;
-                    itm.SubItems.Add(serverConfig.Email);
-                    itm.SubItems.Add(serverConfig.SmtpHost);
-                    itm.SubItems.Add(serverConfig.Puerto.ToString());
-                    itm.SubItems.Add(serverConfig.SSL ? "SI" : "NO");
-                    itm.Tag = serverConfig;
-
-                    lstServidores.Items.Add(itm);
-                }
-            }
-            
         }
 
         private void frmMain_Load(object sender, EventArgs e)
         {
             LoadServidores();
             LoadSettings();
-        }
-
-        private void LoadSettings()
-        {
-            txtConfigMailPrueba.Text = Properties.Settings.Default.EmailPrueba;
-            txtConfigMailRespuesta.Text = Properties.Settings.Default.DireccionRespuesta;
-            txtConfigNombre.Text = Properties.Settings.Default.Nombre;
         }
 
         private void btnServidorEliminar_Click(object sender, EventArgs e)
@@ -192,20 +125,174 @@ namespace MailTo
         }
 
 
-        public void ActualizarStatus(string status)
-        {
-            lblStatus.Text = status;
-        }
-
         private void btnMailEnviar_Click(object sender, EventArgs e)
         {
-            lblStatus.Text = "Enviando...";
-            pb.Visible = true;
+            if (lstServidores.Items.Count > 0 && lst.Items.Count > 0)
+            {
+                if (!state.QueueLoaded)
+                {
+                    ReQueueMessages();
+                }
+                cron.Enabled = true;
+                lblStatus.Text = "Enviando...";
+                pb.Visible = true;
+            } else
+            {
+                MessageBox.Show("Debe cargar servidores SMTP y/o mails antes de enviar.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            
         }
 
         private void btnMailLimpiar_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void cron_Tick(object sender, EventArgs e)
+        {
+            state.SendNextMessage();
+            if (state.Estado == 1)
+            {
+                Random random = new Random();
+                // Enviar al azar entre 5 y 15 segundos de separación
+                int proximoEnvio = random.Next(5000, 15000);
+                cron.Interval = proximoEnvio;
+                cron.Enabled = true;
+                lblStatus.Text = "Enviando...";
+                pb.Visible = true;
+            } else
+            {
+                cron.Enabled = false;
+                lblStatus.Text = "Detenido";
+                pb.Visible = false;
+            }
+            
+        }
+
+        private void btnMailPausar_Click(object sender, EventArgs e)
+        {
+            cron.Enabled = false;
+            state.Estado = 2;
+            lblStatus.Text = "Pausado";
+            pb.Visible = false;
+        }
+
+
+
+
+        /// <summary>
+        /// Carga un mensaje a la lista desde la línea de comandos
+        /// </summary>
+        /// <param name="args">Argumentos de la línea de comandos</param>
+        public void NuevoMensaje(string[] args)
+        {
+            if (args.Length > 0)
+            {
+                ArgParser argumentos = new ArgParser(args);
+                Sender sender = new Sender();
+                if (argumentos.Parse(ref sender) == 0)
+                {
+                    ListViewItem itm = new ListViewItem();
+                    itm.Text = (lst.Items.Count + 1).ToString();
+                    itm.SubItems.Add("BORRADOR");
+                    itm.SubItems.Add(sender.Attachment.Length > 0 ? "🔗" : "-");
+                    itm.SubItems.Add(sender.To);
+                    itm.SubItems.Add("N/A");
+                    itm.Tag = sender;
+
+                    sender.MessageID = lst.Items.Count;
+                    lst.Items.Add(itm);
+
+                    state.AddMessage(sender);
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Guarda la configuración de los servidores
+        /// </summary>
+        private void GuardarServidores()
+        {
+            Properties.Settings.Default.Servers.Clear();
+            foreach (ListViewItem itm in lstServidores.Items)
+            {
+                SmtpConfig serverConfig = new SmtpConfig();
+                serverConfig = (SmtpConfig)itm.Tag;
+                Properties.Settings.Default.Servers.Add(serverConfig.ToString());
+            }
+            Properties.Settings.Default.Save();
+        }
+
+        /// <summary>
+        /// Carga los servidores a la lista
+        /// </summary>
+        private void LoadServidores()
+        {
+            if (Properties.Settings.Default.Servers != null)
+            {
+                foreach (string server in Properties.Settings.Default.Servers)
+                {
+                    SmtpConfig serverConfig = new SmtpConfig(server);
+                    ListViewItem itm = new ListViewItem();
+                    itm.Text = serverConfig.ProveedorNombre;
+                    itm.SubItems.Add(serverConfig.Email);
+                    itm.SubItems.Add(serverConfig.SmtpHost);
+                    itm.SubItems.Add(serverConfig.Puerto.ToString());
+                    itm.SubItems.Add(serverConfig.SSL ? "SI" : "NO");
+                    itm.Tag = serverConfig;
+
+                    lstServidores.Items.Add(itm);
+
+                    state.AddServer(serverConfig);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Carga las configuraciones en los cuadros de texto.
+        /// </summary>
+        private void LoadSettings()
+        {
+            txtConfigMailPrueba.Text = Properties.Settings.Default.EmailPrueba;
+            txtConfigMailRespuesta.Text = Properties.Settings.Default.DireccionRespuesta;
+            txtConfigNombre.Text = Properties.Settings.Default.Nombre;
+        }
+
+        /// <summary>
+        /// Actualiza el estado del mensaje.
+        /// </summary>
+        /// <param name="messageID">Index del ListViewItem del mensaje</param>
+        /// <param name="status">Estado del envío</param>
+        /// <param name="sendFrom">De que servidor se envío</param>
+        public void ActualizarMensaje(int messageID, int status, string sendFrom)
+        {
+            lst.Items[messageID].SubItems[1].Text = status == 0 ? "ENVIADO" : "ERROR";
+            lst.Items[messageID].SubItems[4].Text = status == 0 ? sendFrom : "N/A";
+            Sender s = (Sender)lst.Items[messageID].Tag;
+            s.Sent = status == 0 ? true : false;
+            lst.Items[messageID].Tag = s;
+        }
+
+        /// <summary>
+        /// Vuelve a cargar los mensajes que no se enviaron en la lista para enviar
+        /// </summary>
+        private void ReQueueMessages()
+        {
+            foreach (ListViewItem itm in lst.Items)
+            {
+                Sender s = (Sender)itm.Tag;
+                if (!s.Sent) state.AddMessage(s);
+            }
+        }
+
+        /// <summary>
+        /// Actualiza el texto del barra de estado.
+        /// </summary>
+        /// <param name="status"></param>
+        public void ActualizarStatus(string status)
+        {
+            lblStatus.Text = status;
         }
     }
 }
