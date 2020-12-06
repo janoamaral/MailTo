@@ -6,6 +6,9 @@ y se agrega nuevas opciones para controlar el estado del envío.
 
 Los mensajes se envían al azar entre 5 y 15 segundos seleccionando, también al azar (random round-robin) entre el grupo de servidores SMTP.
 
+### Requerimientos
+
+.NET Framework [4.7.2](https://dotnet.microsoft.com/download/dotnet-framework/net472) o superior
 
 ### Uso.
 
