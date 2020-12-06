@@ -49,7 +49,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>icons8-new-post-96.ico</ApplicationIcon>
+    <ApplicationIcon>RES\icons8-new-post-96.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>MailTo.Program</StartupObject>
@@ -129,9 +129,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="icons8-email-send-96.ico" />
-    <Content Include="icons8-new-post-96.ico" />
-    <Content Include="RES\apple-mail-493152.ico" />
+    <Content Include="RES\icons8-new-post-96.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
