@@ -17,8 +17,6 @@ namespace MailTo
         public frmMain()
         {
             InitializeComponent();
-            NuevoMensaje(Environment.GetCommandLineArgs());
-
             if (Properties.Settings.Default.Servers == null)
             {
                 Properties.Settings.Default.Servers = new System.Collections.Specialized.StringCollection();
@@ -67,8 +65,9 @@ namespace MailTo
         private void frmMain_Load(object sender, EventArgs e)
         {
             LoadServidores();
-            LoadMails();
             LoadSettings();
+            LoadMails();
+            NuevoMensaje(Environment.GetCommandLineArgs());
         }
 
         private void btnServidorEliminar_Click(object sender, EventArgs e)
@@ -138,20 +137,7 @@ namespace MailTo
 
         private void btnMailEnviar_Click(object sender, EventArgs e)
         {
-            if (lstServidores.Items.Count > 0 && lst.Items.Count > 0)
-            {
-                if (!state.QueueLoaded)
-                {
-                    ReQueueMessages();
-                }
-                cron.Enabled = true;
-                lblStatus.Text = "Enviando...";
-                pb.Visible = true;
-            } else
-            {
-                MessageBox.Show("Debe cargar servidores SMTP y/o mails antes de enviar.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-            
+            IniciarEnvio();
         }
 
         private void btnMailLimpiar_Click(object sender, EventArgs e)
@@ -159,42 +145,70 @@ namespace MailTo
             if (MessageBox.Show("Va a eliminar toda la lista de correos. ¿Continuar?.", "MailTo", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
             {
                 lst.Items.Clear();
+                state.DequeueAll();
                 Properties.Settings.Default.MailList.Clear();
                 Properties.Settings.Default.Save();
-
             }
         }
 
         private void cron_Tick(object sender, EventArgs e)
         {
-            state.SendNextMessage();
-            if (state.Estado == 1)
+            if (state.Estado != state.EstadoNuevo)
             {
-                Random random = new Random();
-                // Enviar al azar entre 5 y 15 segundos de separación
-                int proximoEnvio = random.Next(5000, 15000);
-                cron.Interval = proximoEnvio;
-                cron.Enabled = true;
-                lblStatus.Text = "Enviando...";
-                pb.Visible = true;
-            } else
-            {
-                cron.Enabled = false;
-                lblStatus.Text = "Detenido";
-                pb.Visible = false;
+                state.Estado = state.EstadoNuevo;
             }
-            
+
+            switch (state.Estado)
+            {
+                case 0:
+                    lblStatus.Text = "Detenido";
+                    pb.Visible = false;
+                    break;
+                case 1:
+                    lblStatus.Text = "Enviando...";
+                    pb.Visible = true;
+                    state.SendNextMessage();
+                    Random random = new Random();
+                    // Enviar al azar entre 5 y 15 segundos de separación
+                    int proximoEnvio = random.Next(5000, 15000);
+                    cron.Interval = proximoEnvio;
+                    break;
+                case 2:
+                    lblStatus.Text = "Detenido";
+                    pb.Visible = false;
+                    break;
+            }
         }
 
         private void btnMailPausar_Click(object sender, EventArgs e)
         {
-            cron.Enabled = false;
-            state.Estado = 2;
-            lblStatus.Text = "Pausado";
-            pb.Visible = false;
+            PausarEnvio();
         }
 
 
+        public void IniciarEnvio()
+        {
+            try
+            {
+                if (lstServidores.Items.Count > 0 && lst.Items.Count > 0)
+                {
+                    if (!state.QueueLoaded)
+                    {
+                        ReQueueMessages();
+                    }
+                    state.EstadoNuevo = 1;
+                }
+            } catch(Exception err)
+            {
+                MessageBox.Show(err.Message, "MailTo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+        }
+
+        public void PausarEnvio()
+        {
+            state.EstadoNuevo = 2;
+        }
 
 
         /// <summary>
@@ -215,15 +229,20 @@ namespace MailTo
                     itm.SubItems.Add(sender.Attachment.Length > 0 ? "🔗" : "-");
                     itm.SubItems.Add(sender.To);
                     itm.SubItems.Add("N/A");
-                    itm.Tag = sender;
+                    
 
                     sender.MessageID = lst.Items.Count;
-                    GuardarMail(sender.Sent? 1 : 0, argumentos.RawCompose);
+                    sender.Sent = false;
+                    GuardarMail(1, argumentos.RawCompose);
 
+                    itm.Tag = sender;
                     lst.Items.Add(itm);
 
                     state.AddMessage(sender);
                 }
+
+                if (argumentos.State == 1 && state.Estado != 1) IniciarEnvio();
+                if (argumentos.State == 2 && state.Estado != 2) PausarEnvio();
             }
         }
 
@@ -265,7 +284,7 @@ namespace MailTo
 
                         lst.Items.Add(itm);
 
-                        if (mail.Substring(0,1) == "1") state.AddMessage(sender);
+                        if (!sender.Sent) state.AddMessage(sender);
                         i++;
                     }
                 }
@@ -340,7 +359,7 @@ namespace MailTo
             lst.Items[messageID].Tag = s;
 
             string raw = Properties.Settings.Default.MailList[messageID];
-            Properties.Settings.Default.MailList[messageID] = $"{status};{raw.Substring(raw.IndexOf(';'))}";
+            Properties.Settings.Default.MailList[messageID] = $"{(s.Sent? "0" : "1")};{raw.Substring(raw.IndexOf(';'))}";
             Properties.Settings.Default.Save();
         }
 

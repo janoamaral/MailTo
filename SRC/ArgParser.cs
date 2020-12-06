@@ -12,6 +12,14 @@ namespace MailTo.SRC
         public string[] Args { get; set; }
         public string RawCompose = "";
 
+        /// <summary>
+        /// Estado de envío
+        /// 0 = Detenido
+        /// 1 = iniciar
+        /// 2 = pausar
+        /// </summary>
+        public int State = 0;
+
         public ArgParser() 
         {
 
@@ -30,6 +38,11 @@ namespace MailTo.SRC
         public int Parse(ref Sender sender)
         {
             // Buscar los parametros
+            if (Args[Args.Length - 1] == "start") State = 1;
+            if (Args[Args.Length - 1] == "pause") State = 2;
+
+
+
             int index = 0;
             for (int i = 0; i < Args.Length; i++)
             {

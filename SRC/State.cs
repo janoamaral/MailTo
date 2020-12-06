@@ -21,6 +21,8 @@ namespace MailTo.SRC
         /// 2=Pausado
         /// </summary>
         public int Estado = 0;
+        public int EstadoNuevo = 0;
+
         public bool QueueLoaded = false;
 
         /// <summary>
@@ -68,17 +70,16 @@ namespace MailTo.SRC
         public void SendNextMessage() {
             Roulette();
             if (Mensajes.Any()) {
-                Estado = 1;
                 Mensajes.Peek().LoadServer(Servidores.Pop());
                 Mensajes.Dequeue().Send();
                 if (!Mensajes.Any())
                 {
-                    Estado = 0;
+                    EstadoNuevo = 0;
                     QueueLoaded = false;
                 }
             } else
             {
-                Estado = 0;
+                EstadoNuevo = 0;
                 QueueLoaded = false;
             }
         }

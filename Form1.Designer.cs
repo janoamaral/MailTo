@@ -115,9 +115,11 @@ namespace MailTo
             // 
             // statusbar
             // 
+            this.statusbar.AutoSize = false;
             this.statusbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.pb,
-            this.lblStatus});
+            this.lblStatus,
+            this.pb});
+            this.statusbar.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.statusbar.Location = new System.Drawing.Point(0, 428);
             this.statusbar.Name = "statusbar";
             this.statusbar.Size = new System.Drawing.Size(800, 22);
@@ -475,6 +477,8 @@ namespace MailTo
             // 
             // cron
             // 
+            this.cron.Enabled = true;
+            this.cron.Interval = 500;
             this.cron.Tick += new System.EventHandler(this.cron_Tick);
             // 
             // frmMain

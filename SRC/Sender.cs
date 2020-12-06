@@ -6,6 +6,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading;
 using System.ComponentModel;
+using System.IO;
 
 namespace MailTo.SRC
 {
@@ -106,10 +107,17 @@ namespace MailTo.SRC
                 email.IsBodyHtml = true;
                 email.Body = Body;
 
+                if (Attachment.Length > 0)
+                {
+                    for (int i=0; i < Attachment.Split(',').Length; i++)
+                    {
+                        string attach = Attachment.Split(',')[i];
+                        if (File.Exists(attach)) email.Attachments.Add(new System.Net.Mail.Attachment(attach));
+                    }
+                }
+
                 smtp.SendCompleted += new SendCompletedEventHandler((sender, e) => SendCompletedCallback(sender, e, MessageID));
                 smtp.SendAsync(email, DateTime.Now.Ticks.ToString());
-                Program.FrmMain.ActualizarStatus("Enviando prueba");
-
             }
             catch (Exception) {
                 return -1;
