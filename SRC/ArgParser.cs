@@ -10,6 +10,7 @@ namespace MailTo.SRC
     class ArgParser
     {
         public string[] Args { get; set; }
+        public string RawCompose = "";
 
         public ArgParser() 
         {
@@ -21,7 +22,11 @@ namespace MailTo.SRC
             Args = args;
         }
 
-
+        /// <summary>
+        /// Parsea un array de argumentos y extrae los campos.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <returns></returns>
         public int Parse(ref Sender sender)
         {
             // Buscar los parametros
@@ -42,7 +47,29 @@ namespace MailTo.SRC
             sender.Body = GetField("body", args);
             sender.Attachment = GetField("attachment", args);
 
-            return ((sender.To.Length > 0 && sender.Subject.Length > 0 && sender.Body.Length > 0) ? 0 : -1);
+            if (sender.To.Length > 0 && sender.Subject.Length > 0 && sender.Body.Length > 0)
+            {
+                RawCompose = args;
+                return 0;
+            }
+
+            return -1;
+        }
+
+        public int Parse(ref Sender sender, string rawArgument)
+        {
+            sender.To = GetField("to", rawArgument);
+            sender.Subject = GetField("subject", rawArgument);
+            sender.Body = GetField("body", rawArgument);
+            sender.Attachment = GetField("attachment", rawArgument);
+
+            if (sender.To.Length > 0 && sender.Subject.Length > 0 && sender.Body.Length > 0)
+            {
+                RawCompose = rawArgument;
+                return 0;
+            }
+
+            return -1;
         }
 
         private string GetField(string field, string text)

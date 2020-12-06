@@ -9,6 +9,9 @@ using System.ComponentModel;
 
 namespace MailTo.SRC
 {
+    /// <summary>
+    /// Envía E-mails de manera asíncrona.
+    /// </summary>
     public class Sender
     {
         SmtpConfig smtpConfig = new SmtpConfig();

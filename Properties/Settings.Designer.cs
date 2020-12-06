@@ -71,5 +71,16 @@ namespace MailTo.Properties {
                 this["DireccionRespuesta"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection MailList {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["MailList"]));
+            }
+            set {
+                this["MailList"] = value;
+            }
+        }
     }
 }

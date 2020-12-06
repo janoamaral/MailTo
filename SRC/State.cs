@@ -43,7 +43,8 @@ namespace MailTo.SRC
         }
 
         /// <summary>
-        /// Ordena los servidores a utilizar al azar.
+        /// Ordena los servidores a utilizar al azar en grupos, para evitar que nunca haya más de 
+        /// dos envíos seguidos del mismo servidor.
         /// </summary>
         private void Roulette()
         {
@@ -70,12 +71,24 @@ namespace MailTo.SRC
                 Estado = 1;
                 Mensajes.Peek().LoadServer(Servidores.Pop());
                 Mensajes.Dequeue().Send();
-                if (!Mensajes.Any()) Estado = 0;
+                if (!Mensajes.Any())
+                {
+                    Estado = 0;
+                    QueueLoaded = false;
+                }
             } else
             {
                 Estado = 0;
                 QueueLoaded = false;
             }
+        }
+
+        /// <summary>
+        /// Quita todos los mensajes de la lista de mensajes
+        /// </summary>
+        public void DequeueAll()
+        {
+            Mensajes.Clear();
         }
     }
 }

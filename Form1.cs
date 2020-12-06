@@ -18,6 +18,16 @@ namespace MailTo
         {
             InitializeComponent();
             NuevoMensaje(Environment.GetCommandLineArgs());
+
+            if (Properties.Settings.Default.Servers == null)
+            {
+                Properties.Settings.Default.Servers = new System.Collections.Specialized.StringCollection();
+            }
+
+            if (Properties.Settings.Default.MailList == null)
+            {
+                Properties.Settings.Default.MailList = new System.Collections.Specialized.StringCollection();
+            }
         }
 
         private void mnuSalir_Click(object sender, EventArgs e)
@@ -57,6 +67,7 @@ namespace MailTo
         private void frmMain_Load(object sender, EventArgs e)
         {
             LoadServidores();
+            LoadMails();
             LoadSettings();
         }
 
@@ -145,7 +156,13 @@ namespace MailTo
 
         private void btnMailLimpiar_Click(object sender, EventArgs e)
         {
+            if (MessageBox.Show("Va a eliminar toda la lista de correos. ¿Continuar?.", "MailTo", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+            {
+                lst.Items.Clear();
+                Properties.Settings.Default.MailList.Clear();
+                Properties.Settings.Default.Save();
 
+            }
         }
 
         private void cron_Tick(object sender, EventArgs e)
@@ -201,6 +218,8 @@ namespace MailTo
                     itm.Tag = sender;
 
                     sender.MessageID = lst.Items.Count;
+                    GuardarMail(sender.MessageID, argumentos.RawCompose);
+
                     lst.Items.Add(itm);
 
                     state.AddMessage(sender);
@@ -208,6 +227,48 @@ namespace MailTo
             }
         }
 
+        /// <summary>
+        /// Guarda el email en la configuración del programa.
+        /// </summary>
+        /// <param name="MessageID"></param>
+        /// <param name="Message"></param>
+        private void GuardarMail(int MessageID, string Message)
+        {
+            Properties.Settings.Default.MailList.Add(Message);
+            Properties.Settings.Default.Save();
+        }
+
+        /// <summary>
+        /// Carga la lista de email en la lista y prepara el envío
+        /// </summary>
+        private void LoadMails()
+        {
+            if (Properties.Settings.Default.MailList != null)
+            {
+                int i = 0;
+                foreach (string mail in Properties.Settings.Default.MailList)
+                {
+                    ArgParser argumentos = new ArgParser();
+                    Sender sender = new Sender();
+                    if (argumentos.Parse(ref sender, mail.Substring(mail.IndexOf(';') >= 0 ? mail.IndexOf(';') : 0 )) == 0)
+                    {
+                        ListViewItem itm = new ListViewItem();
+                        itm.Text = (lst.Items.Count + 1).ToString();
+                        itm.SubItems.Add("BORRADOR");
+                        itm.SubItems.Add(sender.Attachment.Length > 0 ? "🔗" : "-");
+                        itm.SubItems.Add(sender.To);
+                        itm.SubItems.Add("N/A");
+                        itm.Tag = sender;
+
+                        sender.MessageID = i;
+                        lst.Items.Add(itm);
+
+                        state.AddMessage(sender);
+                        i++;
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// Guarda la configuración de los servidores
