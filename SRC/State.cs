@@ -32,17 +32,25 @@ namespace MailTo.SRC
             ServidoresDisponibles.Add(server);
         }
 
+        /// <summary>
+        /// Agrega un mensaje a la lista de envíos
+        /// </summary>
+        /// <param name="messaje">El mensaje a enviar</param>
         public void AddMessage(Sender messaje)
         {
             Mensajes.Enqueue(messaje);
             QueueLoaded = true;
         }
 
+        /// <summary>
+        /// Ordena los servidores a utilizar al azar.
+        /// </summary>
         private void Roulette()
         {
             if (ServidoresDisponibles.Count > 0 && !Servidores.Any())
             {
-                List<SmtpConfig> servidoresSorteo = ServidoresDisponibles;
+                List<SmtpConfig> servidoresSorteo = new List<SmtpConfig>();
+                servidoresSorteo.AddRange(ServidoresDisponibles.ToArray());
                 while (servidoresSorteo.Count > 0)
                 {
                     Random random = new Random();
@@ -53,6 +61,9 @@ namespace MailTo.SRC
             }
         }
 
+        /// <summary>
+        /// Envía el próximo mensaje de la fila
+        /// </summary>
         public void SendNextMessage() {
             Roulette();
             if (Mensajes.Any()) {

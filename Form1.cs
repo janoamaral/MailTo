@@ -267,8 +267,8 @@ namespace MailTo
         /// <param name="sendFrom">De que servidor se envío</param>
         public void ActualizarMensaje(int messageID, int status, string sendFrom)
         {
-            lst.Items[messageID].SubItems[1].Text = status == 0 ? "ENVIADO" : "ERROR";
-            lst.Items[messageID].SubItems[4].Text = status == 0 ? sendFrom : "N/A";
+            lst.Items[messageID].SubItems[1].Text = status == 0 ? "ENVIADO" : "FALLO";
+            lst.Items[messageID].SubItems[4].Text = sendFrom;
             Sender s = (Sender)lst.Items[messageID].Tag;
             s.Sent = status == 0 ? true : false;
             lst.Items[messageID].Tag = s;

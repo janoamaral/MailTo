@@ -198,7 +198,7 @@ namespace MailTo
             // 
             // columnHeader10
             // 
-            this.columnHeader10.Text = "Enviado desde";
+            this.columnHeader10.Text = "Servidor de salida";
             this.columnHeader10.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.columnHeader10.Width = 283;
             // 
