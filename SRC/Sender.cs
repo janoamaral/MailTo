@@ -24,6 +24,7 @@ namespace MailTo.SRC
         public string ReplyTo = "";
         public string Subject = "";
         public string Body = "";
+        public string HTML = "";
         public string Attachment = "";
         public bool Sent = false;
 
@@ -105,7 +106,15 @@ namespace MailTo.SRC
                 
                 email.Subject = Subject;
                 email.IsBodyHtml = true;
-                email.Body = Body;
+
+                if (HTML.Length > 0)
+                {
+                    email.Body = System.IO.File.ReadAllText(HTML);
+                } else
+                {
+                    email.Body = Body;
+                }
+                
 
                 if (Attachment.Length > 0)
                 {

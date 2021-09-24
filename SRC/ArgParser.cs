@@ -59,6 +59,7 @@ namespace MailTo.SRC
             sender.Subject = GetField("subject", args);
             sender.Body = GetField("body", args);
             sender.Attachment = GetField("attachment", args);
+            sender.HTML = GetField("html", args);
 
             if (sender.To.Length > 0 && sender.Subject.Length > 0 && sender.Body.Length > 0)
             {
@@ -75,6 +76,7 @@ namespace MailTo.SRC
             sender.Subject = GetField("subject", rawArgument);
             sender.Body = GetField("body", rawArgument);
             sender.Attachment = GetField("attachment", rawArgument);
+            sender.HTML = GetField("html", rawArgument);
 
             if (sender.To.Length > 0 && sender.Subject.Length > 0 && sender.Body.Length > 0)
             {
